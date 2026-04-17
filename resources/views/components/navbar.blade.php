@@ -13,11 +13,11 @@
                 <x-button type="secondary" label="Sign In" href="{{ route('login') }}" class="hidden md:block rounded-full px-5" />
             @else
                 {{-- CEK APAKAH USER ADALAH ADMIN --}}
-                @if(auth()->user()->status == 'admin')
+                @if(auth()->user()->role == 'admin')
                     <x-button 
                         type="secondary" 
                         label="Dashboard" 
-                        href="{{ route('dashboard') }}" 
+                        href="{{ route('admin.dashboard') }}" 
                         class="hidden md:block rounded-full px-6" 
                     />
                 @endif

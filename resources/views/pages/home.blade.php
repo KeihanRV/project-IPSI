@@ -29,7 +29,7 @@
             @foreach($products as $product)
                 <x-product-card 
                     :title="$product->title" 
-                    :price="$product->price" 
+                    :price="$product->lowest_price" 
                     :rating="$product->rating" 
                     :sold="number_format($product->sold, 0, ',', '.')" 
                     :location="$product->location" 
