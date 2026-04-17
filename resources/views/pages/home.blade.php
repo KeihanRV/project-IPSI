@@ -26,10 +26,34 @@
     @else
         {{-- INI ADALAH GRID SATU-SATUNYA (Berdiri sendiri) --}}
         <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-            @foreach($products as $product)
+                <x-product-card 
+                    :title="$product->title" 
+                    :price="$product->lowest_price" 
+                    :rating="$product->rating" 
+                    :sold="number_format($product->sold, 0, ',', '.')" 
+                    :location="$product->location" 
+                    :image="$product->image"
+                    :url="route('product.detail', ['id' => $product->id])"
+                />
+>>>>>>> origin/Keihan
+            @endforeach
+=======
+@foreach($products as $product)
                 <x-product-card :title="$product->title" :price="$product->price" :rating="$product->rating"
                     :sold="number_format($product->sold, 0, ',', '.')" :location="$product->location" :image="$product->image"
                     product-id="$product->id" :url="route('product.detail', ['id' => $product->id])" />
+            @endforeach
+=======
+                <x-product-card 
+                    :title="$product->title" 
+                    :price="$product->lowest_price" 
+                    :rating="$product->rating" 
+                    :sold="number_format($product->sold, 0, ',', '.')" 
+                    :location="$product->location" 
+                    :image="$product->image"
+                    :url="route('product.detail', ['id' => $product->id])"
+                />
+>>>>>>> origin/Keihan
             @endforeach
         </div>
     @endif

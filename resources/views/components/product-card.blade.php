@@ -6,7 +6,7 @@
     class="border border-gray-300 rounded-xl p-4 flex flex-col hover:shadow-lg transition-all duration-300 bg-white hover:-translate-y-1 block">
     <div class="w-full aspect-square bg-gray-100 rounded-lg flex items-center justify-center mb-4 overflow-hidden">
         @if($image)
-            <img src="{{ $image }}" alt="{{ $title }}" class="object-cover w-full h-full">
+            <img src="{{ asset('storage/product/' . $image) }}" alt="{{ $title }}" class="object-cover w-full h-full">
         @else
             <i class="fas fa-image text-6xl text-gray-300"></i>
         @endif
