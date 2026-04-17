@@ -15,39 +15,31 @@
                     class="hidden md:block rounded-full px-5" />
             @else
                 {{-- CEK APAKAH USER ADALAH ADMIN --}}
-                <<<<<<< HEAD @if(auth()->user()->role == 'admin')
-                    <x-button type="secondary" label="Dashboard" href="{{ route('admin.dashboard') }}"
+                @if(auth()->user()->status == 'admin')
+                    <x-button type="secondary" label="Dashboard" href="{{ route('dashboard') }}"
                         class="hidden md:block rounded-full px-6" />
-                    >>>>>>> origin/Keihan
                 @endif
-                    =======
-                    @if(auth()->user()->status == 'admin')
-                        <x-button type="secondary" label="Dashboard" href="{{ route('dashboard') }}"
-                            class="hidden md:block rounded-full px-6" />
-                    @endif
-                    =======
-                    @if(auth()->user()->role == 'admin')
-                        <x-button type="secondary" label="Dashboard" href="{{ route('admin.dashboard') }}"
-                            class="hidden md:block rounded-full px-6" />
-                        >>>>>>> origin/Keihan
-                    @endif
             @endguest
 
-                <div class="ml-2">
-                    <x-search-bar />
-                </div>
+            <div class="ml-2">
+                <x-search-bar />
+            </div>
 
-                <a href="{{ route('cart.index') }}" title="Keranjang Belanja"
-                    class="relative w-10 h-10 flex items-center justify-center rounded-full border border-gray-300 text-gray-600 hover:bg-gray-50 transition">
-                    <i class="fas fa-shopping-cart"></i>
-                    @php $cartService = new \App\Services\CartService();
-                    $count = $cartService->count(); @endphp
+            <a href="{{ route('cart.index') }}" title="Keranjang Belanja"
+                class="relative w-10 h-10 flex items-center justify-center rounded-full border border-gray-300 text-gray-600 hover:bg-gray-50 transition">
+                <i class="fas fa-shopping-cart"></i>
+                @php
+                    $cartService = new \App\Services\CartService();
+                    $count = $cartService->count();
+                @endphp
                 @if($count > 0)
                     <span
-                            class="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center font-bold">{{ $count > 99 ? '99+' : $count }}</span>
+                        class="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center font-bold">
+                        {{ $count > 99 ? '99+' : $count }}
+                    </span>
                 @endif
             </a>
-    
+
             @auth
                 {{-- Tombol Profil --}}
                 <a href="{{ route('profile.edit') }}" title="Profil Saya"
@@ -61,7 +53,7 @@
                     <button type="submit" title="Log Out" class="text-gray-400 hover:text-red-500 transition ml-1">
                         <i class="fas fa-power-off"></i>
                     </button>
-                    </form>
+                </form>
             @endauth
 
         </div>

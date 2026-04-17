@@ -28,16 +28,10 @@
                     </p>
                 </div>
 
-                <div class="space-y-3">
-                    <div class="flex items-center gap-3">
-                        <label class="text-sm font-medium text-gray-700 w-16">Jumlah:</label>
-                        <input type="number" name="qty" value="1" min="1" max="99"
-                            class="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brand focus:border-brand">
-                    </div>
-                    <x-primary-button type="submit" class="w-full py-3 text-lg">
-                        <i class="fas fa-cart-plus mr-2"></i> Tambah ke Keranjang
-                    </x-primary-button>
-                </div>
+                <form method="POST" action="{{ route('cart.store') }}" class="w-full">
+                    @csrf
+                    <input type="hidden" name="product_id" value="{{ $product->id }}">
+                    <x-button label="Tambah ke Keranjang" type="primary" class="w-full py-3 text-lg" />
                 </form>
             </div>
         </div>

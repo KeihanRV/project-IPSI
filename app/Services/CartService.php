@@ -3,7 +3,6 @@
 namespace App\Services;
 
 use App\Models\Product;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 
 class CartService
@@ -26,9 +25,10 @@ class CartService
             $cart[$productId]['qty'] += $qty;
         } else {
             $cart[$productId] = [
-                'product' => $product,
-                'qty' => $qty,
+                'name' => $product->title,
                 'price' => $product->price,
+                'qty' => $qty,
+                'image' => $product->image,
             ];
         }
 
@@ -39,13 +39,11 @@ class CartService
     public function update($productId, $qty)
     {
         $cart = $this->getCart();
-
         if ($qty <= 0) {
             unset($cart[$productId]);
         } else {
             $cart[$productId]['qty'] = $qty;
         }
-
         Session::put('cart', $cart);
     }
 
@@ -70,11 +68,7 @@ class CartService
     public function total()
     {
         $cart = $this->getCart();
-        $total = 0;
-        foreach ($cart as $item) {
-            $total += $item['qty'] * $item['price'];
-        }
-        return $total;
+        return array_reduce($cart, fn($sum, $item) => $sum + $item['qty'] * $item['price']);
     }
 
     public function getItems()

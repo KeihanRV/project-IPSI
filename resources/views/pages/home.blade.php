@@ -29,7 +29,7 @@
             @foreach($products as $product)
                 <x-product-card :title="$product->title" :price="$product->price" :rating="$product->rating"
                     :sold="number_format($product->sold, 0, ',', '.')" :location="$product->location" :image="$product->image"
-                    product-id="$product->id" :url="route('product.detail', ['id' => $product->id])" />
+                    :url="route('product.detail', ['id' => $product->id])" :product-id="$product->id" />
             @endforeach
         </div>
     @endif

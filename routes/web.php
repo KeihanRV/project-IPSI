@@ -1,22 +1,13 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\CartController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProductController;
-use App\Http\Controllers\AdminController;
 use Illuminate\Support\Facades\Auth;
 
 Route::get('/', [ProductController::class, 'index'])->name('home');
 
 Route::get('/product/{id}', [ProductController::class, 'show'])->name('product.detail');
-
-// Cart routes
-Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
-Route::post('/cart', [CartController::class, 'store'])->name('cart.store');
-Route::patch('/cart', [CartController::class, 'update'])->name('cart.update');
-Route::delete('/cart/{id}', [CartController::class, 'remove'])->name('cart.remove');
-Route::delete('/cart', [CartController::class, 'clear'])->name('cart.clear');
 
 Route::get('/login', function () {
     return view('auth.login');
@@ -29,16 +20,24 @@ Route::post('/logout', function () {
     return redirect('/');
 })->name('logout');
 
-Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
-    
-    Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('dashboard');
-    
-    Route::get('/products/create', [ProductController::class, 'create'])->name('products.create');
-    Route::post('/products', [ProductController::class, 'store'])->name('products.store');
-    Route::get('/products/{id}/edit', [ProductController::class, 'edit'])->name('products.edit');
-    Route::put('/products/{id}', [ProductController::class, 'update'])->name('products.update');
-    Route::delete('/products/{id}', [ProductController::class, 'destroy'])->name('products.destroy');
-});
+Route::get('/dashboard', function () {
+    if (auth()->user()->status !== 'admin') {
+        return redirect('/')->with('error', 'Anda tidak memiliki akses ke halaman ini.');
+    }
+    // return view('dashboard');
+    return view('testing.unfinished');
+})->middleware(['auth', 'verified'])->name('dashboard');
+
+use App\Http\Controllers\CartController;
+
+Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
+Route::post('/cart', [CartController::class, 'store'])->name('cart.store');
+Route::patch('/cart', [CartController::class, 'update'])->name('cart.update');
+
+Route::get('/cart/{id}', [CartController::class, 'remove'])->name('cart.remove');
+Route::delete('/cart/{id}', [CartController::class, 'remove'])->name('cart.remove.delete');
+
+Route::delete('/cart', [CartController::class, 'clear'])->name('cart.clear');
 
 Route::middleware('auth')->group(function () {
     // Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
