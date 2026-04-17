@@ -47,11 +47,13 @@ class CartController extends Controller
         return back()->with('success', 'Keranjang diperbarui!');
     }
 
+
     public function remove($id)
     {
         $this->cartService->remove($id);
         return back()->with('success', 'Item dihapus!');
     }
+
 
     public function clear()
     {

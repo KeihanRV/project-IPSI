@@ -74,14 +74,12 @@
                                             Rp{{ number_format($item['qty'] * $item['price'], 0, ',', '.') }}</div>
                                     </td>
                                     <td class="px-6 py-4 text-center">
-                                        <form method="DELETE" action="{{ route('cart.remove', $id) }}" class="inline"
-                                            onsubmit="return confirm('Hapus item ini?')">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit" class="text-red-500 hover:text-red-700 text-sm font-medium">
-                                                <i class="fas fa-trash"></i>
-                                            </button>
-                                        </form>
+
+                                        <a href="{{ route('cart.remove', $id) }}" onclick="return confirm('Hapus item ini?')"
+                                            class="text-red-500 hover:text-red-700 text-sm font-medium">
+                                            <i class="fas fa-trash"></i>
+                                        </a>
+
                                     </td>
                                 </tr>
                             @endforeach
