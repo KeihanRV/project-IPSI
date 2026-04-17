@@ -26,84 +26,141 @@
                 </a>
             </div>
         @else
-            <div class="bg-white rounded-xl shadow-sm border overflow-hidden">
-                <div class="overflow-x-auto">
-                    <table class="w-full">
-                        <thead class="bg-gray-50">
-                            <tr>
-                                <th class="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-12">
-                                </th>
-                                <th class="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    Produk</th>
-                                <th class="px-6 py-4 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    Harga</th>
-                                <th class="px-6 py-4 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Qty
-                                </th>
-                                <th class="px-6 py-4 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    Subtotal</th>
-                                <th
-                                    class="px-6 py-4 text-center text-xs font-medium text-gray-500 uppercase tracking-wider w-16">
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody class="divide-y divide-gray-200">
-                            @foreach($items as $id => $item)
+            @php
+                $shipping = 20000;
+                $grandTotal = $total + $shipping;
+            @endphp
+
+            <div class="grid grid-cols-1 xl:grid-cols-[1.75fr_1fr] gap-6">
+                <div class="bg-white rounded-xl shadow-sm border overflow-hidden">
+                    <div class="overflow-x-auto">
+                        <table class="w-full">
+                            <thead class="bg-[#6B5E2E] text-[#F5EEDC]">
                                 <tr>
-                                    <td class="px-6 py-4">
-                                        <img src="{{ $item['image'] ?: asset('images/no-image.jpg') }}" alt="{{ $item['name'] }}"
-                                            class="w-16 h-16 object-cover rounded">
-                                    </td>
-                                    <td class="px-6 py-4">
-                                        <div class="font-medium text-gray-900">{{ $item['name'] }}</div>
-                                    </td>
-                                    <td class="px-6 py-4 text-right">
-                                        <div class="text-lg font-bold font-courier">
-                                            Rp{{ number_format($item['price'], 0, ',', '.') }}</div>
-                                    </td>
-                                    <td class="px-6 py-4 text-center">
-                                        <form method="PATCH" action="{{ route('cart.update') }}" class="inline">
-                                            <input type="hidden" name="items[{{ $id }}][id]" value="{{ $id }}">
-                                            <input type="number" name="items[{{ $id }}][qty]" value="{{ $item['qty'] }}" min="1"
-                                                class="w-20 h-10 border border-gray-300 rounded-lg text-center focus:ring-2 focus:ring-brand">
-                                            <button type="submit"
-                                                class="ml-2 text-brand hover:text-brand-dark text-sm font-medium">Update</button>
-                                        </form>
-                                    </td>
-                                    <td class="px-6 py-4 text-right">
-                                        <div class="text-lg font-bold font-courier">
-                                            Rp{{ number_format($item['qty'] * $item['price'], 0, ',', '.') }}</div>
-                                    </td>
-                                    <td class="px-6 py-4 text-center">
-
-                                        <a href="{{ route('cart.remove', $id) }}" onclick="return confirm('Hapus item ini?')"
-                                            class="text-red-500 hover:text-red-700 text-sm font-medium">
-                                            <i class="fas fa-trash"></i>
-                                        </a>
-
-                                    </td>
+                                    <th class="px-6 py-4 text-left text-xs font-semibold uppercase tracking-wider w-16">
+                                    </th>
+                                    <th class="px-6 py-4 text-left text-xs font-semibold uppercase tracking-wider">
+                                        Produk</th>
+                                    <th class="px-6 py-4 text-right text-xs font-semibold uppercase tracking-wider">
+                                        Harga</th>
+                                    <th class="px-6 py-4 text-center text-xs font-semibold uppercase tracking-wider">
+                                        Kuantitas</th>
+                                    <th class="px-6 py-4 text-right text-xs font-semibold uppercase tracking-wider">
+                                        Subtotal</th>
+                                    <th class="px-6 py-4 text-center text-xs font-semibold uppercase tracking-wider w-16">
+                                        Aksi</th>
                                 </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
-                </div>
-            </div>
+                            </thead>
+                            <tbody class="bg-[#F5EEDC] divide-y divide-[#DAD2B0]">
+                                @foreach($items as $id => $item)
+                                    <tr>
+                                        <td class="px-6 py-4">
+                                            <img src="{{ $item['image'] ?: asset('images/no-image.jpg') }}" alt="{{ $item['name'] }}"
+                                                class="w-16 h-16 object-cover rounded-lg border border-[#DAD2B0]">
+                                        </td>
+                                        <td class="px-6 py-4">
+                                            <div class="font-semibold text-[#3F3B27]">{{ $item['name'] }}</div>
+                                            @if(!empty($item['variant']))
+                                                <div class="text-sm text-[#6B5E2E] mt-1">Varian: {{ $item['variant'] }}</div>
+                                            @endif
+                                        </td>
+                                        <td class="px-6 py-4 text-right">
+                                            <div class="text-lg font-bold font-courier text-[#3F3B27]">
+                                                Rp{{ number_format($item['price'], 0, ',', '.') }}</div>
+                                        </td>
+                                        <td class="px-6 py-4 text-center">
+                                            <div class="inline-flex items-center rounded-lg border border-[#DAD2B0] bg-[#F5EEDC] shadow-sm">
+                                                <form method="POST" action="{{ route('cart.update', $id) }}">
+                                                    @csrf
+                                                    <input type="hidden" name="qty" value="{{ max($item['qty'] - 1, 1) }}">
+                                                    <button type="submit"
+                                                        class="px-3 py-2 font-bold text-[#6B5E2E] hover:text-white hover:bg-[#6B5E2E] transition rounded-l-lg">
+                                                        -
+                                                    </button>
+                                                </form>
 
-            <div
-                class="mt-8 flex flex-col md:flex-row justify-between items-end gap-6 bg-white p-6 rounded-xl shadow-sm border">
-                <div>
-                    <h3 class="text-lg font-bold text-gray-900 mb-2">Total ({{ count($items) }} item)</h3>
-                    <p class="text-2xl font-bold text-gray-900 font-courier">Rp{{ number_format($total, 0, ',', '.') }}</p>
+                                                <span class="px-4 text-sm font-semibold text-[#3F3B27]">{{ $item['qty'] }}</span>
+
+                                                <form method="POST" action="{{ route('cart.update', $id) }}">
+                                                    @csrf
+                                                    <input type="hidden" name="qty" value="{{ $item['qty'] + 1 }}">
+                                                    <button type="submit"
+                                                        class="px-3 py-2 font-bold text-[#6B5E2E] hover:text-white hover:bg-[#6B5E2E] transition rounded-r-lg">
+                                                        +
+                                                    </button>
+                                                </form>
+                                            </div>
+                                        </td>
+                                        <td class="px-6 py-4 text-right">
+                                            <div class="text-lg font-bold font-courier text-[#3F3B27]">
+                                                Rp{{ number_format($item['subtotal'], 0, ',', '.') }}</div>
+                                        </td>
+                                        <td class="px-6 py-4 text-center">
+                                            <form method="POST" action="{{ route('cart.destroy', $id) }}" onsubmit="return confirm('Hapus item ini?');">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" class="text-[#6B5E2E] hover:text-red-600">
+                                                    <i class="fas fa-trash"></i>
+                                                </button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="mt-6 p-6 border-t border-[#DAD2B0] bg-[#F5EEDC]">
+                        <label for="note" class="block text-sm font-semibold text-[#6B5E2E] mb-2">Catatan</label>
+                        <textarea id="note" rows="5" class="w-full rounded-xl border border-[#DAD2B0] bg-white px-4 py-3 text-sm text-[#3F3B27] focus:outline-none focus:ring-2 focus:ring-[#C9A227]"
+                            placeholder="Tambahkan catatan khusus untuk pesanan..."></textarea>
+                    </div>
                 </div>
-                <div class="flex flex-col sm:flex-row gap-3">
-                    <form method="DELETE" action="{{ route('cart.clear') }}"
-                        onsubmit="return confirm('Kosongkan seluruh keranjang?')" class="order-2">
+
+                <aside class="bg-[#F5EEDC] border border-[#DAD2B0] rounded-xl shadow-sm p-6">
+                    <div class="mb-6">
+                        <p class="text-xs font-semibold uppercase tracking-wider text-[#6B5E2E] mb-2">Penerima</p>
+                        <h2 class="text-xl font-bold text-[#3F3B27]">John Deckert Smith</h2>
+                    </div>
+
+                    <div class="space-y-4 text-sm text-[#3F3B27]">
+                        <div class="rounded-2xl border border-[#DAD2B0] bg-white p-4">
+                            <p class="font-semibold text-[#6B5E2E] mb-2">Alamat Pengiriman</p>
+                            <p>Jalan Marmor Hijau No. 128-B, Blok C-7,</p>
+                            <p>Kompleks Perumahan Griya Senja Kencana,</p>
+                            <p>RT 009 / RW 014, Kelurahan Pasir Angin,</p>
+                            <p>Kecamatan Bukit Melati, Kota Administrasi Jakarta Timur,</p>
+                            <p>Daerah Khusus Jakarta, 13960.</p>
+                        </div>
+
+                        <div class="rounded-2xl border border-[#DAD2B0] bg-white p-4">
+                            <p class="font-semibold text-[#6B5E2E] mb-2">Estimasi Tiba</p>
+                            <p>2 - 3 hari kerja</p>
+                        </div>
+                    </div>
+
+                    <div class="mt-6 border-t border-[#DAD2B0] pt-4 space-y-3 text-sm text-[#3F3B27]">
+                        <div class="flex justify-between">
+                            <span>Subtotal</span>
+                            <span>Rp{{ number_format($total, 0, ',', '.') }}</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>Estimasi Ongkir</span>
+                            <span>Rp{{ number_format($shipping, 0, ',', '.') }}</span>
+                        </div>
+                        <div class="flex justify-between font-semibold text-[#3F3B27]">
+                            <span>Total</span>
+                            <span>Rp{{ number_format($grandTotal, 0, ',', '.') }}</span>
+                        </div>
+                    </div>
+
+                    <form method="POST" action="{{ route('cart.checkout') }}" class="mt-6">
                         @csrf
-                        @method('DELETE')
-                        <x-button type="secondary" label="Kosongkan Keranjang" />
+                        <button type="submit" class="w-full rounded-xl bg-[#C9A227] text-white py-3 font-semibold uppercase tracking-wider hover:bg-[#B08B1E] transition">
+                            Checkout
+                        </button>
                     </form>
-                    <x-button type="primary" label="Checkout"
-                        class="!w-full sm:w-auto order-1 sm:order-none bg-green-600 hover:bg-green-700" />
-                </div>
+                </aside>
             </div>
         @endif
     </div>

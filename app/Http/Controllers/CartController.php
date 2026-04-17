@@ -33,27 +33,36 @@ class CartController extends Controller
         return back()->with('success', $success ? 'Ditambahkan ke keranjang!' : 'Produk tidak ditemukan.');
     }
 
-    public function update(Request $request)
+    public function checkout(Request $request)
     {
-        $request->validate([
-            'items.*.qty' => 'integer|min:1',
-            'items.*.id' => 'exists:products,id'
-        ]);
+        $this->cartService->clear();
 
-        foreach ($request->items as $item) {
-            $this->cartService->update($item['id'], $item['qty']);
-        }
-
-        return back()->with('success', 'Keranjang diperbarui!');
+        return redirect('/')->with('success', 'Checkout Berhasil');
     }
 
+    public function update(Request $request, $id)
+    {
+        $validated = $request->validate([
+            'qty' => 'required|integer|min:1',
+        ]);
+
+        $this->cartService->updateById($id, $validated['qty']);
+
+        return back()->with('success', 'Kuantitas keranjang diperbarui!');
+    }
+
+    public function destroy($id)
+    {
+        $this->cartService->removeById($id);
+
+        return back()->with('success', 'Item dihapus dari keranjang!');
+    }
 
     public function remove($id)
     {
-        $this->cartService->remove($id);
+        $this->cartService->removeById($id);
         return back()->with('success', 'Item dihapus!');
     }
-
 
     public function clear()
     {
