@@ -1,13 +1,18 @@
-# Add to Cart Functionality
+# Fix variant_id NULL Issue in Cart
+
+Status: 🔄 In Progress
 
 ## Steps:
 
-### 1. [ ] Add route `cart.add` POST to routes/web.php
+- [x]   1. Analyzed files & created plan (CartController, CartService, Blade files)
+- [✅] 2. Edit `resources/views/pages/product-detail.blade.php`
+    - Replace hardcoded variants with `@foreach($product->variants)`
+    - Add hidden `name='variant_id' id='selected-variant-id'`
+    - Update JS `selectVariant(variantId)` for numeric IDs
+    - Update button onclick to pass `{{ $variant->id }}`
+- [ ]   3. Test add to cart with variant selection
+- [ ]   4. Verify DB: carts table has variant_id populated
+- [ ]   5. Test composite logic: same product+variant → increment qty; different variant → new row
+- [ ]   6. Complete: attempt_completion
 
-### 2. ✅ Add CartController@addToCart using CartService->add(product_id, qty, variant_id)
-
-### 3. ✅ Update pages/product-detail.blade.php: form, variant IDs, quantity inputs, JS for select/highlight/subtotal
-
-### 4. [ ] Test add different variants (separate items), same variant (increment qty)
-
-**Progress: 2/4**
+Next: Edit Blade file

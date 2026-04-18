@@ -8,7 +8,7 @@
             <form action="{{ route('cart.add') }}" method="POST">
                 @csrf
                 <input type="hidden" name="product_id" value="{{ $product->id }}">
-                <input type="hidden" name="variant" id="selected-variant" value="" required>
+                <input type="hidden" name="variant_id" id="selected-variant-id" value="0">
 
                 <!-- TOP HERO SECTION -->
                 <div class='grid grid-cols-1 lg:grid-cols-2 gap-20 items-start'>
@@ -52,20 +52,29 @@
                         <!-- Price (Large Serif) -->
                         <div class="text-6xl font-mono font-bold text-black"
                             style="font-family: 'Courier New', Courier, monospace;">Rp
-                            {{ number_format($product->lowest_price, 0, ',', '.') }}</div>
+                            {{ number_format($product->lowest_price, 0, ',', '.') }}
+                        </div>
 
                         <!-- Variants (Grid 3 cols) -->
                         <div>
                             <label class="text-2xl font-bold mb-6 block">Varian:</label>
                             <div class="grid grid-cols-3 gap-3">
-                                @foreach(['38', '39', '40', '41', '42'] as $v)
-                                    <button type="button" onclick="selectVariant('{{ $v }}')" id="btn-{{ $v }}"
+                                @foreach($product->variants->take(5) as $variant)
+                                    <button type="button" onclick="selectVariant({{ $variant->id }})"
+                                        id="btn-variant-{{ $variant->id }}" data-variant-id="{{ $variant->id }}"
+                                        data-variant-name="{{ $variant->name }}"
+                                        data-variant-stock="{{ $variant->stock ?? '∞' }}"
                                         class="variant-btn p-4 bg-white border border-gray-200 hover:border-[#D4B47B] rounded-2xl transition-all hover:shadow-md hover:scale-[1.02] flex flex-col items-center">
                                         <div
                                             class="w-12 h-12 bg-gray-200 rounded-xl flex items-center justify-center mb-2 border-2 border-transparent">
-                                            <i class="fas fa-circle text-gray-400 text-lg"></i>
+                                            @if($variant->image)
+                                                <img src="{{ asset('storage/variant/' . $variant->image) }}"
+                                                    alt="{{ $variant->name }}" class="w-full h-full rounded-lg object-cover">
+                                            @else
+                                                <i class="fas fa-circle text-gray-400 text-lg"></i>
+                                            @endif
                                         </div>
-                                        <span class="font-bold text-lg text-gray-800">{{ $v }}</span>
+                                        <span class="font-bold text-lg text-gray-800 text-center">{{ $variant->name }}</span>
                                     </button>
                                 @endforeach
                             </div>
@@ -175,20 +184,32 @@
     </div>
 
     <script>
-        function selectVariant(val) {
-            document.getElementById('selected-variant').value = val;
+        function selectVariant(variantId) {
+            // Update hidden input
+            document.getElementById('selected-variant-id').value = variantId;
+
+            // Reset all buttons
             document.querySelectorAll('.variant-btn').forEach(btn => {
                 btn.style.borderColor = '#D4B47B30';
                 btn.style.backgroundColor = 'white';
                 btn.style.transform = 'scale(1)';
                 btn.style.boxShadow = 'none';
             });
-            const activeBtn = document.getElementById('btn-' + val);
+
+            // Activate selected button
+            const activeBtn = document.getElementById('btn-variant-' + variantId);
             if (activeBtn) {
                 activeBtn.style.borderColor = '#D4B47B';
                 activeBtn.style.backgroundColor = '#F8F6F0';
                 activeBtn.style.transform = 'scale(1.02)';
                 activeBtn.style.boxShadow = '0 4px 12px rgba(212, 180, 141, 0.2)';
+
+                // Optional: Update stock display
+                const stockEl = activeBtn.closest('.flex').nextElementSibling.querySelector('span');
+                if (stockEl) {
+                    const stock = activeBtn.dataset.variantStock;
+                    stockEl.textContent = `Stok: ${stock === '∞' ? 'Tersedia' : stock}`;
+                }
             }
         }
 

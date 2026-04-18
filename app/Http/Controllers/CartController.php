@@ -29,9 +29,43 @@ class CartController extends Controller
             'quantity' => 'required|integer|min:1'
         ]);
 
-        $success = $this->cartService->add($request->product_id, $request->quantity, $request->variant_id);
+        $productId = $request->product_id;
+        $variantId = $request->variant_id ? (int) $request->variant_id : null;
+        $quantity = $request->quantity;
+        $userId = auth()->id();
+        $sessionId = session()->getId();
 
-        return back()->with('success', $success ? 'Ditambahkan ke keranjang!' : 'Gagal menambahkan produk.');
+        // Check if cart item exists (user OR session + product_id + variant_id)
+        $cartItem = \App\Models\Cart::where(function ($query) use ($userId, $sessionId) {
+            if ($userId) {
+                $query->where('user_id', $userId);
+            } else {
+                $query->where('session_id', $sessionId);
+            }
+        })
+            ->where('product_id', $productId)
+            ->when($variantId, function ($query) use ($variantId) {
+                $query->where('variant_id', $variantId);
+            })
+            ->first();
+
+        if ($cartItem) {
+            // Increment quantity
+            $cartItem->increment('quantity', $quantity);
+            $message = 'Keranjang diperbarui!';
+        } else {
+            // Create new cart item
+            \App\Models\Cart::create([
+                'user_id' => $userId,
+                'session_id' => $userId ? null : $sessionId,
+                'product_id' => $productId,
+                'variant_id' => $variantId,
+                'quantity' => $quantity,
+            ]);
+            $message = 'Ditambahkan ke keranjang!';
+        }
+
+        return back()->with('success', $message);
     }
 
     public function store(Request $request)
