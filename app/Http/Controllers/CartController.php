@@ -21,6 +21,19 @@ class CartController extends Controller
         return view('pages.cart', compact('items', 'total'));
     }
 
+    public function addToCart(Request $request)
+    {
+        $request->validate([
+            'product_id' => 'required|exists:products,id',
+            'variant_id' => 'nullable|exists:variants,id',
+            'quantity' => 'required|integer|min:1'
+        ]);
+
+        $success = $this->cartService->add($request->product_id, $request->quantity, $request->variant_id);
+
+        return back()->with('success', $success ? 'Ditambahkan ke keranjang!' : 'Gagal menambahkan produk.');
+    }
+
     public function store(Request $request)
     {
         $request->validate([

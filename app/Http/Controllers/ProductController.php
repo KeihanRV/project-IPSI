@@ -16,7 +16,7 @@ class ProductController extends Controller
 
         $products = Product::when($search, function ($query, $search) {
             return $query->where('title', 'like', '%' . $search . '%')
-                         ->orWhere('location', 'like', '%' . $search . '%'); 
+                ->orWhere('location', 'like', '%' . $search . '%');
         })->get();
 
         return view('pages.home', compact('products'));
@@ -24,8 +24,13 @@ class ProductController extends Controller
 
     public function show($id)
     {
-        $product = Product::findOrFail($id); 
-        return view('testing.detail', compact('product'));
+        $product = Product::with('variants')->findOrFail($id);
+
+        // Format for view
+        $product->lowest_price = $product->variants->min('price') ?? 0;
+        $product->specs = explode("\n", $product->specification ?? '');
+
+        return view('pages.product-detail', compact('product'));
     }
 
     public function create()
@@ -115,9 +120,9 @@ class ProductController extends Controller
     public function edit($id)
     {
         $product = Product::with('variants')->findOrFail($id);
-        
+
         // Format variants dengan URL gambar untuk JavaScript
-        $product->variants_data = $product->variants->map(function($variant) {
+        $product->variants_data = $product->variants->map(function ($variant) {
             return [
                 'id' => $variant->id,
                 'name' => $variant->name,
@@ -126,7 +131,7 @@ class ProductController extends Controller
                 'image' => $variant->image ? asset('storage/variant/' . $variant->image) : null,
             ];
         });
-        
+
         return view('admin.edit-product', compact('product'));
     }
 

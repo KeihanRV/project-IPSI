@@ -1,26 +1,13 @@
-# TODO: Implementasi Fitur Keranjang (Session-based)
+# Add to Cart Functionality
 
-✅ **SELESAI! Fitur keranjang lengkap:**
+## Steps:
 
-- Backend service/controller/routes ✅
-- Navbar link + badge count ✅
-- Add to cart from list/detail (dengan qty) ✅
-- Cart page: view items, update qty, remove, clear, total ✅
+### 1. [ ] Add route `cart.add` POST to routes/web.php
 
-## Cara Test:
+### 2. ✅ Add CartController@addToCart using CartService->add(product_id, qty, variant_id)
 
-1. `php artisan serve`
-2. Buka localhost:8000
-3. Klik "Tambah ke Keranjang" di home atau detail (/product/1)
-4. Lihat badge di navbar
-5. Klik cart icon → /cart
-6. Test update qty, hapus, kosongkan
+### 3. ✅ Update pages/product-detail.blade.php: form, variant IDs, quantity inputs, JS for select/highlight/subtotal
 
-Notes:
+### 4. [ ] Test add different variants (separate items), same variant (increment qty)
 
-- Guest + auth ok (session)
-- Navbar badge instantiate service langsung (simple)
-- Checkout stub (alert)
-- Linter error di routes ignore (tidak pengaruh run)
-
-Fitur siap pakai! 🎉
+**Progress: 2/4**

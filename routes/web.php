@@ -35,16 +35,17 @@ Route::middleware('auth')->group(function () {
     // Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::get('/profile', function () {
         return view('testing.unfinished');
-        })->name('profile.edit');
-        Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-        Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    })->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
-        Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
-        Route::post('/cart', [CartController::class, 'store'])->name('cart.store');
-        Route::post('/cart/update/{id}', [CartController::class, 'update'])->name('cart.update');
-        Route::delete('/cart/delete/{id}', [CartController::class, 'destroy'])->name('cart.destroy');
-        Route::delete('/cart', [CartController::class, 'clear'])->name('cart.clear');
-        Route::post('/checkout', [CartController::class, 'checkout'])->name('cart.checkout');
+    Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
+    Route::post('/cart/add', [CartController::class, 'addToCart'])->name('cart.add');
+    Route::post('/cart', [CartController::class, 'store'])->name('cart.store');
+    Route::post('/cart/update/{id}', [CartController::class, 'update'])->name('cart.update');
+    Route::delete('/cart/delete/{id}', [CartController::class, 'destroy'])->name('cart.destroy');
+    Route::delete('/cart', [CartController::class, 'clear'])->name('cart.clear');
+    Route::post('/checkout', [CartController::class, 'checkout'])->name('cart.checkout');
 });
 
 require __DIR__ . '/auth.php';
