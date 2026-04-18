@@ -43,8 +43,16 @@
             @auth
                 {{-- Tombol Profil --}}
                 <a href="{{ route('profile.edit') }}" title="Profil Saya"
-                    class="w-10 h-10 flex items-center justify-center rounded-full border border-brand text-brand hover:bg-gray-50 transition">
-                    <i class="fas fa-user"></i>
+                    class="w-10 h-10 flex items-center justify-center rounded-full border border-brand text-brand hover:bg-gray-50 transition overflow-hidden">
+                    
+                    @if(auth()->user()->profile_picture)
+                        {{-- Jika user sudah upload foto --}}
+                        <img src="{{ asset('storage/' . auth()->user()->profile_picture) }}" alt="Foto Profil" class="w-full h-full object-cover" />
+                    @else
+                        {{-- Jika belum ada foto, tampilkan inisial nama --}}
+                        <img src="https://ui-avatars.com/api/?name={{ urlencode(auth()->user()->name) }}&background=5a4a0a&color=ffffff" alt="Foto Profil" class="w-full h-full object-cover" />
+                    @endif
+
                 </a>
 
                 {{-- Tombol Logout --}}
