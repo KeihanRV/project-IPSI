@@ -1,18 +1,14 @@
-# Fix variant_id NULL Issue in Cart
+# TODO: Fix Variant Selection Off-by-One Bug in product-detail.blade.php
 
-Status: 🔄 In Progress
+## Plan Steps:
 
-## Steps:
+- [x] Step 1: Add dedicated `#stock-display` span in quantity selector section
+- [x] Step 2: Update variant buttons `@foreach` loop - change onclick to pass id + stock
+- [x] Step 3: Rewrite `selectVariant(id, stock)` JS function with correct stock update and class-based active styling
+- [x] Step 4: Add CSS rules for `.variant-btn.active` visual feedback
+- [ ] Step 4: Add CSS rules for `.variant-btn.active` visual feedback
+- [x] Step 5: Test variant selection - verify stock updates correctly, active button highlights, form submits right id
+- [x] Step 6: Clear view cache - `php artisan view:clear`
+- [x] Step 7: Verify add-to-cart saves correct variant_id in DB
 
-- [x]   1. Analyzed files & created plan (CartController, CartService, Blade files)
-- [✅] 2. Edit `resources/views/pages/product-detail.blade.php`
-    - Replace hardcoded variants with `@foreach($product->variants)`
-    - Add hidden `name='variant_id' id='selected-variant-id'`
-    - Update JS `selectVariant(variantId)` for numeric IDs
-    - Update button onclick to pass `{{ $variant->id }}`
-- [ ]   3. Test add to cart with variant selection
-- [ ]   4. Verify DB: carts table has variant_id populated
-- [ ]   5. Test composite logic: same product+variant → increment qty; different variant → new row
-- [ ]   6. Complete: attempt_completion
-
-Next: Edit Blade file
+**Status**: ✅ COMPLETE - Variant selection off-by-one fixed. Stock now shows per clicked variant. Active styling works with class/CSS. Form ready for cart.

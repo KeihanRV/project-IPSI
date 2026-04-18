@@ -60,11 +60,12 @@
                             <label class="text-2xl font-bold mb-6 block">Varian:</label>
                             <div class="grid grid-cols-3 gap-3">
                                 @foreach($product->variants->take(5) as $variant)
-                                    <button type="button" onclick="selectVariant({{ $variant->id }})"
+                                    <button type="button"
+                                        onclick="selectVariant({{ $variant->id }}, '{{ $variant->stock ?? "∞" }}')"
                                         id="btn-variant-{{ $variant->id }}" data-variant-id="{{ $variant->id }}"
                                         data-variant-name="{{ $variant->name }}"
-                                        data-variant-stock="{{ $variant->stock ?? '∞' }}"
                                         class="variant-btn p-4 bg-white border border-gray-200 hover:border-[#D4B47B] rounded-2xl transition-all hover:shadow-md hover:scale-[1.02] flex flex-col items-center">
+
                                         <div
                                             class="w-12 h-12 bg-gray-200 rounded-xl flex items-center justify-center mb-2 border-2 border-transparent">
                                             @if($variant->image)
@@ -90,8 +91,8 @@
                                 <button type="button" onclick="changeQty(1)"
                                     class="w-14 h-14 border border-gray-300 rounded-2xl flex items-center justify-center hover:bg-gray-50 transition font-bold text-xl text-gray-700">+</button>
                             </div>
-                            <span class="text-xl font-semibold text-gray-700">Stok:
-                                {{ $product->variants->sum('stock') }}</span>
+                            <span id="stock-display" class="text-xl font-semibold text-gray-700">Stok: ∞</span>
+
                         </div>
 
                         <!-- Subtotal (Align Right) -->
@@ -184,34 +185,41 @@
     </div>
 
     <script>
-        function selectVariant(variantId) {
+        // CSS for active variant button
+        const style = document.createElement('style');
+        style.textContent = `
+                .variant-btn {
+                    transition: all 0.2s ease;
+                }
+                .variant-btn.active {
+                    border-color: #D4B47B !important;
+                    background-color: #F8F6F0 !important;
+                    transform: scale(1.02) !important;
+                    box-shadow: 0 4px 12px rgba(212, 180, 141, 0.2) !important;
+                }
+            `;
+        document.head.appendChild(style);
+
+        function selectVariant(id, stock) {
+
             // Update hidden input
-            document.getElementById('selected-variant-id').value = variantId;
+            document.getElementById('selected-variant-id').value = id;
+
+            // Update stock display
+            document.getElementById('stock-display').innerHTML = 'Stok: ' + stock;
 
             // Reset all buttons
             document.querySelectorAll('.variant-btn').forEach(btn => {
-                btn.style.borderColor = '#D4B47B30';
-                btn.style.backgroundColor = 'white';
-                btn.style.transform = 'scale(1)';
-                btn.style.boxShadow = 'none';
+                btn.classList.remove('active');
             });
 
             // Activate selected button
-            const activeBtn = document.getElementById('btn-variant-' + variantId);
+            const activeBtn = document.getElementById('btn-variant-' + id);
             if (activeBtn) {
-                activeBtn.style.borderColor = '#D4B47B';
-                activeBtn.style.backgroundColor = '#F8F6F0';
-                activeBtn.style.transform = 'scale(1.02)';
-                activeBtn.style.boxShadow = '0 4px 12px rgba(212, 180, 141, 0.2)';
-
-                // Optional: Update stock display
-                const stockEl = activeBtn.closest('.flex').nextElementSibling.querySelector('span');
-                if (stockEl) {
-                    const stock = activeBtn.dataset.variantStock;
-                    stockEl.textContent = `Stok: ${stock === '∞' ? 'Tersedia' : stock}`;
-                }
+                activeBtn.classList.add('active');
             }
         }
+
 
         function changeQty(amt) {
             const input = document.getElementById('qty-input');
