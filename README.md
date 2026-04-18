@@ -186,4 +186,4 @@ php artisan db:seed --class=ProductSeeder
 - Gunakan feature branches: `git checkout -b feature/nama-fitur`
 - MIT License
 
-**Dibuat dengan ❤️ untuk presentasi profesional. Last update:** `date('Y-m-d H:i')`
+**Dibuat dengan ❤️ untuk presentasi profesional. Last update:** `date('2026-4-18 8:41 PM')`
