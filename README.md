@@ -1,249 +1,189 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# SHOO - Platform E-Commerce Luxury Sneakers & Accessories
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+[![Laravel](https://img.shields.io/badge/Laravel-11.x-ff4444?logo=laravel&logoColor=white)](https://laravel.com)
+[![PHP](https://img.shields.io/badge/PHP-8.3-777BB4?logo=php&logoColor=white)](https://php.net)
+[![TailwindCSS](https://img.shields.io/badge/TailwindCSS-3.x-0ea5e9?logo=tailwindcss&logoColor=white)](https://tailwindcss.com)
+[![MySQL](https://img.shields.io/badge/MySQL-4479A1?logo=mysql&logoColor=white)](https://mysql.com)
+[![Git](https://img.shields.io/badge/Git-F05032?logo=git&logoColor=white)](https://git-scm.com)
 
-## About Laravel
+## 1. Pendahuluan & Visi Produk
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+**Nama Proyek:** SHOO - Luxury E-Commerce Platform
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+**Deskripsi:**  
+Platform belanja daring eksklusif yang fokus pada pengalaman pengguna premium untuk **Luxury Sneakers & Accessories**. SHOO dirancang dengan arsitektur modern, UI/UX luxury, dan fitur canggih seperti manajemen varian real-time, keranjang pintar untuk guest/auth, serta sistem inventory akurat.
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+**Visi:** Menyediakan pengalaman belanja digital kelas dunia dengan desain minimalis elegan, performa cepat, dan keamanan tingkat enterprise.
 
-## Learning Laravel
+## 2. Arsitektur Teknologi (Tech Stack)
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+| Komponen            | Teknologi                         | Versi                      | Deskripsi                               |
+| ------------------- | --------------------------------- | -------------------------- | --------------------------------------- |
+| **Backend**         | Laravel                           | 11.x (^13.0)               | Framework PHP full-featured             |
+| **Bahasa**          | PHP                               | ^8.3                       | Runtime dengan type safety              |
+| **Frontend**        | Blade + Tailwind CSS + Vanilla JS | Tailwind ^3.1, Alpine ^3.4 | UI responsive luxury, state mgmt ringan |
+| **Bundler**         | Vite                              | ^8.0                       | Build tool cepat HMR                    |
+| **Database**        | MySQL                             | Relational                 | Schema migrations Eloquent ORM          |
+| **Auth**            | Laravel Sanctum + Breeze          | ^4.0, ^2.4                 | Session-based + API tokens              |
+| **Version Control** | Git                               | Branch-based               | Kolaborasi feature/admin branches       |
+| **Testing**         | Pest + PHPUnit                    | ^4.5                       | Unit/Feature tests lengkap              |
 
-In addition, [Laracasts](https://laracasts.com) contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
-
-You can also watch bite-sized lessons with real-world projects on [Laravel Learn](https://laravel.com/learn), where you will be guided through building a Laravel application from scratch while learning PHP fundamentals.
-
-## Agentic Development
-
-Laravel's predictable structure and conventions make it ideal for AI coding agents like Claude Code, Cursor, and GitHub Copilot. Install [Laravel Boost](https://laravel.com/docs/ai) to supercharge your AI workflow:
+**Konfigurasi Tambahan:**
 
 ```bash
-composer require laravel/boost --dev
-
-php artisan boost:install
+# Tailwind custom (tailwind.config.js)
+fontFamily: { sans: ['Figtree', ...defaultTheme.fontFamily.sans] }
+plugins: [@tailwindcss/forms]
 ```
 
-Boost provides your agent 15+ tools and skills that help agents build Laravel applications while following best practices.
+## 3. Fitur Utama Sistem
 
-## Contributing
+### Product Management
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+- Katalog dinamis dengan search full-text (title/location)
+- CRUD admin lengkap dengan upload gambar produk/varian (transaksi DB atomic)
+- Spesifikasi produk terstruktur (parse line-by-line)
 
-## Code of Conduct
+### Luxury Product Detail
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+- Layout lebar `max-w-7xl mx-auto` untuk visual eksklusif
+- **Tipografi khusus:** Harga monospace `font-mono font-bold text-6xl` (Courier New)
+- **3 Kartu info dashed-border:** Detail/Spesifikasi/Review (`bg-[#FDFBF2] border-dashed border-blue-300`)
+- Palet luxury: Beige `#FAF9F6`, Gold `#D4B47B` gradient buttons
 
-## Security Vulnerabilities
+### Advanced Inventory System
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+- Stok per varian (`variants.stock`) real-time di client-side
+- Validasi stok sebelum add-to-cart
+- Total stock accessor di Product model
 
-## License
+### Smart Cart System
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+- **Dual mode:** Guest (`session_id`) + Auth (`user_id`)
+- **Composite keys:** Unique `(user/session + product_id + variant_id)` cegah overwrite
+- Merge otomatis session → user saat login (Listener `MigrateCartOnLogin`)
+- Subtotal/harga dinamis via accessors (`$cart->subtotal = $price * $qty`)
 
----
+### Variant Handling
 
-# SHOO - Premium Sneakers E-Commerce
+- Sinkronisasi sempurna: UI grid selector → hidden `variant_id` → Controller cast `(int)`
+- Gambar per varian, harga independen
+- Query conditional `when($variantId, ...where('variant_id', $variantId))`
 
-[![Laravel](https://img.shields.io/badge/Laravel-11.x-red?logo=laravel&logoColor=white)](https://laravel.com)
-[![Tailwind CSS](https://img.shields.io/badge/TailwindCSS-3.x-blue?logo=tailwindcss&logoColor=white)](https://tailwindcss.com)
-[![Vite](https://img.shields.io/badge/Vite-5.x-green?logo=vite&logoColor=white)](https://vitejs.dev/)
+## 4. Desain Database & Skema
 
-**SHOO** adalah platform e-commerce sneakers premium dengan desain luxury dan fitur modern menggunakan Laravel 11 + Tailwind CSS.
+### Hubungan Tabel Utama
 
-## 🚀 Fitur Product Detail & Cart System (V1.0)
-
-Fitur lengkap halaman **Product Detail** dan **Cart System** yang baru diimplementasikan dengan UI/UX premium, state management real-time, dan backend robust menggunakan composite keys.
-
-### 1. UI/UX Redesign ✨
-
-**Luxury Wide Layout** (`max-w-7xl mx-auto`) untuk pengalaman visual eksklusif.
-
-**Palet Warna Premium**:
-| Warna | Hex | Penggunaan |
-|-------|-----|------------|
-| Beige | `#FAF9F6` | Background utama (`min-h-screen bg-[#FAF9F6]`) |
-| Gold | `#D4B47B` | Accent border, gradient button (`from-[#D4B47B] to-[#C8A76A]`) |
-
-**Tipografi Khusus** - Harga **monospace** untuk kesan eksklusif:
-
-```blade
-<!-- resources/views/pages/product-detail.blade.php -->
-<div class="text-6xl font-mono font-bold text-black"
-     style="font-family: 'Courier New', Courier, monospace;">
-    Rp {{ number_format($product->lowest_price, 0, ',', '.') }}
-</div>
+```
+users (1) ──┐
+             ├─ carts (N) ── products (1)
+             │              │
+             └────────────── variants (N)
 ```
 
-**3 Kartu Info Responsif** dengan `border-dashed`:
+**Detail Skema:**
 
-```blade
-<div class='grid grid-cols-1 md:grid-cols-3 gap-6 border-t pt-12 border-blue-200'>
-    <!-- Detail | Spesifikasi | Review -->
-    <div class='bg-[#FDFBF2] p-8 rounded-xl border border-dashed border-blue-300 hover:shadow-xl'>
-        <h2 class='text-2xl font-bold mb-6'>Detail Produk</h2>
-        {{ $product->description }}
-    </div>
-</div>
+| Tabel      | Kolom Utama                                                                                                       | Constraints/Notes    |
+| ---------- | ----------------------------------------------------------------------------------------------------------------- | -------------------- |
+| `users`    | `id`, `name`, `email`, `profile_*` (phone, address, etc.)                                                         | Enhanced profile     |
+| `products` | `id`, `title`, `description`, `specification`, `location`, `image`, `rating`, `sold`                              | Base product         |
+| `variants` | `id`, `product_id` (FK cascade), `name`, `price`, `stock`, `image`                                                | Per-size/color       |
+| `carts`    | `id`, `user_id` (nullable FK), `session_id` (nullable), `product_id` (FK), `variant_id` (nullable FK), `quantity` | **Composite unique** |
+
+**Composite Key di Carts (Kunci Sukses):**
+
+```php
+// Migration
+$table->unique(['user_id', 'product_id', 'variant_id'], 'unique_cart_item');
+$table->unique(['session_id', 'product_id', 'variant_id'], 'unique_guest_cart_item');
 ```
 
-### 2. Frontend Logic (State Management) ⚡
+## 5. Implementasi Teknis & Solusi Masalah
 
-**Pure JavaScript** tanpa library eksternal:
-
-- **Varian Selector Grid** (3 kolom): Click → update hidden `variant_id` + stok real-time.
-- **Quantity Selector**: +/- buttons, `min:1`, input number custom.
-- **Real-time Sync**: Hindari off-by-one dengan data-attribute per varian.
+### State Management Frontend (Vanilla JS)
 
 ```javascript
-// Key Functions
+// Variant sync + stok real-time
 function selectVariant(id, stock) {
     document.getElementById("selected-variant-id").value = id;
     document.getElementById("stock-display").innerHTML = `Stok: ${stock}`;
-    // Toggle .active class (gold border + scale)
-}
-
-function changeQty(amt) {
-    let val = parseInt(document.getElementById("qty-input").value) || 1;
-    if (val + amt >= 1) document.getElementById("qty-input").value = val + amt;
+    // Active class: gold border + scale
 }
 ```
 
-**Visual States**: Hover scale, active variant gold shadow.
-
-### 3. Backend & Database Integration 🔗
-
-**Route**: `POST /cart/add` → `CartController@addToCart`
-
-**Validasi Ketat**:
+### Keamanan Data (Mass Assignment Protection)
 
 ```php
-$request->validate([
-    'product_id' => 'required|exists:products,id',
-    'variant_id' => 'nullable|exists:variants,id',
-    'quantity' => 'required|integer|min:1'
-]);
+// Models: $fillable eksplisit
+protected $fillable = ['user_id', 'session_id', 'product_id', 'variant_id', 'quantity'];
+
+// Controller: Validasi ketat
+$request->validate(['product_id' => 'exists:products,id', ...]);
 ```
 
-**Composite Key Logic** mencegah overwriting:
+### Resolusi Konflik & Merge
 
-```php
-// app/Http/Controllers/CartController.php
-$variantId = $request->variant_id ? (int)$request->variant_id : null;
-$userId = auth()->id();
-$sessionId = session()->getId();
+- **Git workflow:** `feature/cart-composite` → `main` (no conflicts via services)
+- **Cart merge:** `CartService::migrateSessionCartToUser()` dipicu `Login` event
 
-$cartItem = Cart::where(function ($query) use ($userId, $sessionId) {
-        $userId ? $query->where('user_id', $userId) : $query->where('session_id', $sessionId);
-    })
-    ->where('product_id', $productId)
-    ->when($variantId, fn($q) => $q->where('variant_id', $variantId))
-    ->first();
+**Solusi Masalah Umum:**
+| Masalah | Solusi |
+|---------|--------|
+| `variant_id` NULL | Cast `(int)$request->variant_id ?: null` + `when()` query |
+| Overwrite cart | Composite unique keys |
+| Stok race-condition | Per-varian stock + increment atomic |
 
-if ($cartItem) {
-    $cartItem->increment('quantity', $quantity);
-} else {
-    Cart::create([
-        'user_id' => $userId,
-        'session_id' => $userId ? null : $sessionId,
-        'product_id' => $productId,
-        'variant_id' => $variantId,
-        'quantity' => $quantity,
-    ]);
-}
-```
+## 6. Panduan Instalasi (Getting Started)
 
-**Cart Model** (`app/Models/Cart.php`):
+### Prasyarat
 
-```php
-protected $fillable = [
-    'user_id', 'session_id', 'product_id', 'variant_id', 'quantity'
-];
-
-public function getPriceAttribute() {
-    return $this->variant?->price ?? $this->product->lowest_price;
-}
-public function getSubtotalAttribute() {
-    return $this->price * $this->quantity;
-}
-```
-
-**Database**: Migration `2026_04_17_115755_create_carts_table.php`.
-
-### 4. Technical Challenges & Solutions 🛠️
-
-| Challenge                    | Root Cause                         | Solution                                                               |
-| ---------------------------- | ---------------------------------- | ---------------------------------------------------------------------- | ---------------------------------------- |
-| `variant_id` selalu **NULL** | Request string kosong + no casting | `(int)$request->variant_id ?: null` + `nullable                        | exists`validation +`when()` query clause |
-| **Stok off-by-one error**    | Array index mismatch               | JS `data-stock` per button + real-time DOM update                      |
-| **Cart overwriting**         | Unique hanya `product_id`          | **Composite unique**: `(user_id/session_id + product_id + variant_id)` |
-| **Mass assignment error**    | Default `$guarded`                 | `$fillable` eksplisit di model                                         |
-
-**Code Fix Example** (variant_id NULL):
-
-**Before (Buggy)**:
-
-```php
-'variant_id' => $request->variant_id,  // '' → NULL always
-$query->where('variant_id', $request->variant_id);  // Query fail
-```
-
-**After (Fixed)**:
-
-```php
-$variantId = $request->variant_id ? (int)$request->variant_id : null;
-$query->when($variantId, fn($q) => $q->where('variant_id', $variantId));
-```
-
-## 🧪 Testing & Demo
+- PHP 8.3+, Composer, Node.js 20+, MySQL 8.0+
+- Git
 
 ```bash
-# 1. Jalankan server
+# 1. Clone repository
+git clone <your-repo-url> SHOO
+cd SHOO
+
+# 2. Install dependencies
+composer install --optimize-autoloader --no-dev
+npm install
+
+# 3. Environment setup
+cp .env.example .env
+php artisan key:generate
+
+# 4. Database
+php artisan migrate --seed  # Includes ProductSeeder
+
+# 5. Storage link
+php artisan storage:link
+
+# 6. Build assets & serve
+npm run build
 php artisan serve
 
-# 2. Seed products + variants
+# Akses: http://127.0.0.1:8000
+# Admin: /admin/dashboard (buat user admin via tinker/seeder)
+```
+
+**Development Multi-terminal:**
+
+```bash
+# composer.json scripts
+npx concurrently "php artisan serve" "npm run dev" "php artisan queue:listen"
+```
+
+**Testing:**
+
+```bash
+php artisan test  # Pest/PHPUnit
 php artisan db:seed --class=ProductSeeder
-
-# 3. Test flow
-# Visit: http://127.0.0.1:8000/products/1
-# Pilih varian → Adjust qty → Add to Cart → /cart
 ```
 
-**Key Routes**:
+## Kontribusi & Lisensi
 
-```
-GET /products/{id}     → ProductController@show
-POST /cart/add         → CartController@addToCart
-GET /cart              → CartController@index
-```
+- Gunakan feature branches: `git checkout -b feature/nama-fitur`
+- MIT License
 
-## 📁 File Structure (Relevant)
-
-```
-app/Models/Cart.php                 # Model + relationships
-app/Http/Controllers/CartController.php # Core logic
-resources/views/pages/product-detail.blade.php # UI + JS
-database/migrations/*_create_carts_table.php # Schema
-```
-
-**Status**: ✅ Production Ready | Next: Checkout + Payment Gateway
-
----
-
-_Dokumen dibuat: " . date('Y-m-d H:i') . "_">
+**Dibuat dengan ❤️ untuk presentasi profesional. Last update:** `date('Y-m-d H:i')`
