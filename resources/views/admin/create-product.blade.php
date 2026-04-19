@@ -97,6 +97,9 @@
         variants: @json(old('variants', [])),
     };
 
+    // Store file objects per variant by index
+    const variantFiles = new Map();
+
     function getSavedDraft() {
         try {
             const raw = localStorage.getItem(DRAFT_KEY);
@@ -114,6 +117,7 @@
 
     function clearDraft() {
         localStorage.removeItem(DRAFT_KEY);
+        variantFiles.clear();
     }
 
     function collectDraftData() {
@@ -154,9 +158,10 @@
     function buildVariantRow(variant = {}, index = 0) {
         const row = document.createElement('div');
         row.className = 'variant-row flex items-center gap-3 p-3 bg-white border border-gray-200 rounded-lg shadow-sm';
+        row.dataset.index = index;
         row.innerHTML = `
             <div class="w-14 h-14 shrink-0 relative border-2 border-dashed border-gray-300 rounded overflow-hidden hover:bg-gray-50 cursor-pointer flex items-center justify-center bg-gray-100 group">
-                <input type="file" name="variants[${index}][image]" class="absolute inset-0 opacity-0 cursor-pointer variant-image-input" accept="image/*">
+                <input type="file" name="variants[${index}][image]" class="absolute inset-0 opacity-0 cursor-pointer variant-image-input" accept="image/*" data-index="${index}">
                 <img src="${escapeHtml(variant.imageDataUrl || '')}" class="w-full h-full object-cover ${variant.imageDataUrl ? '' : 'hidden'} variant-image-preview">
                 <i class="fas fa-camera text-gray-400 text-lg group-hover:text-yellow-600 variant-image-placeholder ${variant.imageDataUrl ? 'hidden' : ''} transition-colors"></i>
             </div>
@@ -177,12 +182,32 @@
         return row;
     }
 
+    function renumberVariants() {
+        // Renumber all variant form field names to ensure sequential indexes
+        variantsContainer.querySelectorAll('.variant-row').forEach((row, newIndex) => {
+            row.dataset.index = newIndex;
+            
+            // Update all input names for this variant
+            row.querySelectorAll('input[type="text"], input[type="number"], input[type="file"]').forEach(input => {
+                const oldName = input.getAttribute('name');
+                if (oldName) {
+                    const newName = oldName.replace(/variants\[\d+\]/, `variants[${newIndex}]`);
+                    input.setAttribute('name', newName);
+                }
+                if (input.type === 'file') {
+                    input.dataset.index = newIndex;
+                }
+            });
+        });
+    }
+
     function rebuildVariantRows(variants = []) {
         variantsContainer.innerHTML = '';
         const source = variants.length ? variants : [{ name: '', price: '', stock: '' }];
         source.forEach((variant, index) => {
             variantsContainer.appendChild(buildVariantRow(variant, index));
         });
+        renumberVariants();
     }
 
     function getCurrentVariantData() {
@@ -205,6 +230,8 @@
 
         if (removeBtn) {
             removeBtn.addEventListener('click', () => {
+                const index = row.dataset.index;
+                variantFiles.delete(index);
                 row.remove();
                 const currentData = getCurrentVariantData();
                 if (currentData.length === 0) {
@@ -219,23 +246,27 @@
         if (imageInputField) {
             imageInputField.addEventListener('change', (event) => {
                 const file = event.target.files[0];
+                const index = imageInputField.dataset.index;
+                
                 if (file) {
+                    // Store file for form submission
+                    variantFiles.set(index, file);
+                    
                     const reader = new FileReader();
                     reader.onload = function(loadEvent) {
                         imagePreviewField.src = loadEvent.target.result;
                         imagePreviewField.classList.remove('hidden');
                         placeholder.classList.add('hidden');
-                        // Simpan data URL ke localStorage setelah perubahan
                         saveDraft();
                     };
                     reader.readAsDataURL(file);
                 } else {
+                    variantFiles.delete(index);
                     imagePreviewField.src = '';
                     imagePreviewField.classList.add('hidden');
                     placeholder.classList.remove('hidden');
                     saveDraft();
                 }
-                saveDraft();
             });
         }
     }
@@ -275,7 +306,9 @@
         }
     });
 
-    form.addEventListener('submit', function() {
+    form.addEventListener('submit', function(e) {
+        // Ensure all variant indexes are sequential before submission
+        renumberVariants();
         clearDraft();
     });
 

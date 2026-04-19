@@ -77,15 +77,11 @@ class ProductController extends Controller
             ]);
 
             // Simpan varian
-            foreach ($validated['variants'] as $variantData) {
+            foreach ($validated['variants'] as $index => $variantData) {
                 $variantImageName = null;
-                if (isset($variantData['image']) && $variantData['image']) {
-                    // Cari file varian berdasarkan index
-                    $index = array_search($variantData, $validated['variants']);
-                    if ($request->hasFile("variants.{$index}.image")) {
-                        $path = $request->file("variants.{$index}.image")->store('variant', 'public');
-                        $variantImageName = basename($path);
-                    }
+                if ($request->hasFile("variants.{$index}.image")) {
+                    $path = $request->file("variants.{$index}.image")->store('variant', 'public');
+                    $variantImageName = basename($path);
                 }
 
                 $product->variants()->create([

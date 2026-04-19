@@ -11,7 +11,7 @@
 
         <div class="flex flex-col md:flex-row rounded-2xl overflow-hidden shadow-sm border border-gray-200">
 
-            <div class="w-full md:w-1/2 bg-gray-100 p-8 flex flex-col items-center justify-center min-h-[400px] relative">
+            <div class="w-full md:w-1/2 bg-gray-100 p-8 flex flex-col items-center justify-center max-h-[500px] relative">
 
                 <input type="file" name="image" id="imageInput" class="hidden" accept="image/*">
 
@@ -54,7 +54,37 @@
 
                     <div class="mt-8 border border-gray-400 rounded-lg p-4">
                         <h4 class="text-sm font-bold text-gray-700 mb-4">Varian Produk (Wajib Min. 1)</h4>
-                        <div id="variantsContainer" class="space-y-3"></div>
+
+                        @php
+                            $initialVariants = old('variants') ?: ($product->variants_data ?? []);
+                        @endphp
+
+                        <div id="variantsContainer" class="space-y-3">
+                            @foreach($initialVariants as $index => $variant)
+                                @php
+                                    $variantImage = data_get($variant, 'imageDataUrl', data_get($variant, 'image', ''));
+                                @endphp
+                                <div class="variant-row flex items-center gap-3 p-3 bg-white border border-gray-200 rounded-lg shadow-sm">
+                                    <input type="hidden" name="variants[{{ $index }}][id]" value="{{ data_get($variant, 'id', '') }}">
+                                    <div class="w-14 h-14 shrink-0 relative border-2 border-dashed border-gray-300 rounded overflow-hidden hover:bg-gray-50 cursor-pointer flex items-center justify-center bg-gray-100 group">
+                                        <input type="file" name="variants[{{ $index }}][image]" class="absolute inset-0 opacity-0 cursor-pointer variant-image-input" accept="image/*" data-index="{{ $index }}">
+                                        <img src="{{ $variantImage }}" class="w-full h-full object-cover {{ $variantImage ? '' : 'hidden' }} variant-image-preview">
+                                        <i class="fas fa-camera text-gray-400 text-lg group-hover:text-yellow-600 variant-image-placeholder {{ $variantImage ? 'hidden' : '' }} transition-colors"></i>
+                                    </div>
+                                    <input type="text" name="variants[{{ $index }}][name]" placeholder="Nama Varian (M, L, XL)" required class="flex-1 bg-transparent border-b border-gray-400 text-sm pb-1 focus:outline-none focus:border-yellow-600" value="{{ data_get($variant, 'name', '') }}">
+                                    <div class="flex-1 flex items-center border-b border-gray-400">
+                                        <span class="text-xs text-gray-500 mr-1">Rp</span>
+                                        <input type="number" name="variants[{{ $index }}][price]" placeholder="Harga" required class="w-full bg-transparent text-sm pb-1 focus:outline-none" value="{{ data_get($variant, 'price', '') }}">
+                                    </div>
+                                    <div class="w-20 flex items-center border-b border-gray-400">
+                                        <input type="number" name="variants[{{ $index }}][stock]" placeholder="Stok" required class="w-full bg-transparent text-sm pb-1 focus:outline-none text-center" value="{{ data_get($variant, 'stock', '') }}">
+                                    </div>
+                                    <button type="button" class="text-red-400 hover:text-red-600 remove-variant-btn ml-2">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </div>
+                            @endforeach
+                        </div>
 
                         <p class="text-xs text-gray-500 mt-3">Catatan: file gambar varian tidak bisa dipulihkan otomatis. Jika halaman ter-refresh atau validasi gagal, unggah ulang file gambar varian.</p>
 
@@ -102,7 +132,7 @@
         description: @json($product->description),
         specification: @json($product->specification),
         location: @json($product->location),
-        variants: @json($product->variants_data->toArray()),
+        variants: @json($product->variants_data ? $product->variants_data->toArray() : []),
     };
 
     function getSavedDraft() {
@@ -164,10 +194,11 @@
     function buildVariantRow(variant = {}, index = 0) {
         const row = document.createElement('div');
         row.className = 'variant-row flex items-center gap-3 p-3 bg-white border border-gray-200 rounded-lg shadow-sm';
+        row.dataset.index = index;
         row.innerHTML = `
             <input type="hidden" name="variants[${index}][id]" value="${escapeHtml(variant.id || '')}">
             <div class="w-14 h-14 shrink-0 relative border-2 border-dashed border-gray-300 rounded overflow-hidden hover:bg-gray-50 cursor-pointer flex items-center justify-center bg-gray-100 group">
-                <input type="file" name="variants[${index}][image]" class="absolute inset-0 opacity-0 cursor-pointer variant-image-input" accept="image/*">
+                <input type="file" name="variants[${index}][image]" class="absolute inset-0 opacity-0 cursor-pointer variant-image-input" accept="image/*" data-index="${index}">
                 <img src="${escapeHtml(variant.imageDataUrl || variant.image || '')}" class="w-full h-full object-cover ${variant.imageDataUrl || variant.image ? '' : 'hidden'} variant-image-preview">
                 <i class="fas fa-camera text-gray-400 text-lg group-hover:text-yellow-600 variant-image-placeholder ${variant.imageDataUrl || variant.image ? 'hidden' : ''} transition-colors"></i>
             </div>
@@ -188,12 +219,32 @@
         return row;
     }
 
+    function renumberVariants() {
+        // Renumber all variant form field names to ensure sequential indexes
+        variantsContainer.querySelectorAll('.variant-row').forEach((row, newIndex) => {
+            row.dataset.index = newIndex;
+            
+            // Update all input names for this variant
+            row.querySelectorAll('input[type="text"], input[type="number"], input[type="file"], input[type="hidden"]').forEach(input => {
+                const oldName = input.getAttribute('name');
+                if (oldName) {
+                    const newName = oldName.replace(/variants\[\d+\]/, `variants[${newIndex}]`);
+                    input.setAttribute('name', newName);
+                }
+                if (input.type === 'file') {
+                    input.dataset.index = newIndex;
+                }
+            });
+        });
+    }
+
     function rebuildVariantRows(variants = []) {
         variantsContainer.innerHTML = '';
         const source = variants.length ? variants : [{ name: '', price: '', stock: '' }];
         source.forEach((variant, index) => {
             variantsContainer.appendChild(buildVariantRow(variant, index));
         });
+        renumberVariants();
     }
 
     function getCurrentVariantData() {
@@ -231,13 +282,13 @@
         if (imageInputField) {
             imageInputField.addEventListener('change', (event) => {
                 const file = event.target.files[0];
+                
                 if (file) {
                     const reader = new FileReader();
                     reader.onload = function(loadEvent) {
                         imagePreviewField.src = loadEvent.target.result;
                         imagePreviewField.classList.remove('hidden');
                         placeholder.classList.add('hidden');
-                        // Simpan data URL ke localStorage setelah perubahan
                         saveDraft();
                     };
                     reader.readAsDataURL(file);
@@ -247,7 +298,6 @@
                     placeholder.classList.remove('hidden');
                     saveDraft();
                 }
-                saveDraft();
             });
         }
     }
@@ -262,7 +312,11 @@
     function initDraft() {
         const savedDraft = getSavedDraft();
         const hasServerVariants = Array.isArray(serverDraft.variants) && serverDraft.variants.length > 0;
-        const variantSource = hasServerVariants ? serverDraft.variants : (savedDraft?.variants || productData.variants);
+        const hasSavedDraftVariants = Array.isArray(savedDraft?.variants) && savedDraft.variants.length > 0;
+        const hasProductVariants = Array.isArray(productData.variants) && productData.variants.length > 0;
+        const variantSource = hasServerVariants
+            ? serverDraft.variants
+            : (hasSavedDraftVariants ? savedDraft.variants : (hasProductVariants ? productData.variants : []));
 
         populateFields({
             title: serverDraft.title ?? savedDraft?.title ?? productData.title,
@@ -287,7 +341,9 @@
         }
     });
 
-    form.addEventListener('submit', function() {
+    form.addEventListener('submit', function(e) {
+        // Ensure all variant indexes are sequential before submission
+        renumberVariants();
         clearDraft();
     });
 
@@ -308,6 +364,10 @@
         }
     });
 
-    document.addEventListener('DOMContentLoaded', initDraft);
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initDraft);
+    } else {
+        initDraft();
+    }
 </script>
 @endsection

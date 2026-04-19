@@ -1,11 +1,5 @@
 # SHOO - Platform E-Commerce Luxury Sneakers & Accessories
 
-[![Laravel](https://img.shields.io/badge/Laravel-11.x-ff4444?logo=laravel&logoColor=white)](https://laravel.com)
-[![PHP](https://img.shields.io/badge/PHP-8.3-777BB4?logo=php&logoColor=white)](https://php.net)
-[![TailwindCSS](https://img.shields.io/badge/TailwindCSS-3.x-0ea5e9?logo=tailwindcss&logoColor=white)](https://tailwindcss.com)
-[![MySQL](https://img.shields.io/badge/MySQL-4479A1?logo=mysql&logoColor=white)](https://mysql.com)
-[![Git](https://img.shields.io/badge/Git-F05032?logo=git&logoColor=white)](https://git-scm.com)
-
 ## 1. Pendahuluan & Visi Produk
 
 **Nama Proyek:** SHOO - Luxury E-Commerce Platform

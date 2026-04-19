@@ -15,8 +15,8 @@
                     class="hidden md:block rounded-full px-5" />
             @else
                 {{-- CEK APAKAH USER ADALAH ADMIN --}}
-                @if(auth()->user()->status == 'admin')
-                    <x-button type="secondary" label="Dashboard" href="{{ route('dashboard') }}"
+                @if(auth()->user()->role == 'admin')
+                    <x-button type="secondary" label="Dashboard" href="{{ route('admin.dashboard') }}"
                         class="hidden md:block rounded-full px-6" />
                 @endif
             @endguest

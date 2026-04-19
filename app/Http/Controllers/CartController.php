@@ -35,6 +35,30 @@ class CartController extends Controller
         $userId = auth()->id();
         $sessionId = session()->getId();
 
+        // Check stock availability
+        if ($variantId) {
+            $variant = \App\Models\Variant::find($variantId);
+            if (!$variant) {
+                return back()->with('error', 'Varian tidak ditemukan.');
+            }
+
+            // Check if requested quantity exceeds available stock
+            $existingQuantity = \App\Models\Cart::where(function ($query) use ($userId, $sessionId) {
+                if ($userId) {
+                    $query->where('user_id', $userId);
+                } else {
+                    $query->where('session_id', $sessionId);
+                }
+            })
+                ->where('product_id', $productId)
+                ->where('variant_id', $variantId)
+                ->sum('quantity');
+
+            if (($existingQuantity + $quantity) > $variant->stock) {
+                return back()->with('error', 'Stok tidak mencukupi. Stok tersedia: ' . $variant->stock . ', sudah di keranjang: ' . $existingQuantity);
+            }
+        }
+
         // Check if cart item exists (user OR session + product_id + variant_id)
         $cartItem = \App\Models\Cart::where(function ($query) use ($userId, $sessionId) {
             if ($userId) {
@@ -92,6 +116,16 @@ class CartController extends Controller
         $validated = $request->validate([
             'qty' => 'required|integer|min:1',
         ]);
+
+        $cartItem = \App\Models\Cart::findOrFail($id);
+
+        // Check stock availability if variant exists
+        if ($cartItem->variant_id) {
+            $variant = \App\Models\Variant::find($cartItem->variant_id);
+            if ($variant && $validated['qty'] > $variant->stock) {
+                return back()->with('error', 'Stok tidak mencukupi. Stok tersedia: ' . $variant->stock);
+            }
+        }
 
         $this->cartService->updateById($id, $validated['qty']);
 

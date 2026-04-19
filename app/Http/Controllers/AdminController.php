@@ -9,7 +9,7 @@ class AdminController extends Controller
 {
     public function dashboard()
     {
-        $products = Product::latest()->get(); 
+        $products = Product::with('variants')->latest()->get(); 
         
         return view('admin.dashboard', compact('products'));
     }

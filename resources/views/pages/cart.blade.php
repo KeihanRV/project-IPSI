@@ -15,6 +15,12 @@
             </div>
         @endif
 
+        @if(session('error'))
+            <div class="bg-red-50 border border-red-200 text-red-800 px-4 py-3 rounded-lg mb-6">
+                {{ session('error') }}
+            </div>
+        @endif
+
         @if(empty($items))
             <div class="text-center py-16">
                 <i class="fas fa-shopping-cart text-6xl text-gray-300 mb-4"></i>
@@ -120,17 +126,24 @@
                 <aside class="bg-[#F5EEDC] border border-[#DAD2B0] rounded-xl shadow-sm p-6">
                     <div class="mb-6">
                         <p class="text-xs font-semibold uppercase tracking-wider text-[#6B5E2E] mb-2">Penerima</p>
-                        <h2 class="text-xl font-bold text-[#3F3B27]">John Deckert Smith</h2>
+                        <h2 class="text-xl font-bold text-[#3F3B27]">{{ auth()->user()->name }}</h2>
                     </div>
 
                     <div class="space-y-4 text-sm text-[#3F3B27]">
                         <div class="rounded-2xl border border-[#DAD2B0] bg-white p-4">
                             <p class="font-semibold text-[#6B5E2E] mb-2">Alamat Pengiriman</p>
-                            <p>Jalan Marmor Hijau No. 128-B, Blok C-7,</p>
-                            <p>Kompleks Perumahan Griya Senja Kencana,</p>
-                            <p>RT 009 / RW 014, Kelurahan Pasir Angin,</p>
-                            <p>Kecamatan Bukit Melati, Kota Administrasi Jakarta Timur,</p>
-                            <p>Daerah Khusus Jakarta, 13960.</p>
+                            @php
+                                $user = auth()->user();
+                                $addressParts = array_filter([
+                                    $user->address,
+                                    $user->district,
+                                    $user->city,
+                                    $user->province,
+                                    $user->postal_code
+                                ]);
+                                $fullAddress = implode(', ', $addressParts);
+                            @endphp
+                            <p>{{ $fullAddress ?: 'Alamat belum diisi' }}</p>
                         </div>
 
                         <div class="rounded-2xl border border-[#DAD2B0] bg-white p-4">
