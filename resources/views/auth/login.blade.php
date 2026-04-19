@@ -9,13 +9,10 @@
             <x-input-error :messages="$errors->get('email')" />
         </div>
 
-        <div x-data="{ show: false }">
-            <x-input-label for="password" value="Password" />
-            <div class="relative">
-                <x-text-input id="password" x-bind:type="show ? 'text' : 'password'" name="password" required placeholder="**********" />
-                <button type="button" @click="show = !show" class="absolute inset-y-0 right-0 pr-4 flex items-center text-white/50">
-                    </button>
-            </div>
+        <div class="mt-4">
+            <x-input-label for="password" value="{{ __('Password') }}" />
+            <x-password-input id="password" class="block mt-1 w-full" name="password" required autocomplete="current-password" placeholder="**********" />
+            <x-input-error :messages="$errors->get('password')" class="mt-2" />
         </div>
 
         <div class="flex items-center justify-between mt-2 px-1">
