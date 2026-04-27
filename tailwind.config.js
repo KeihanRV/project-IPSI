@@ -12,8 +12,18 @@ export default {
     theme: {
         extend: {
             fontFamily: {
-                sans: ['Figtree', ...defaultTheme.fontFamily.sans],
+                 sans: ['Teachers', ...defaultTheme.fontFamily.sans],
             },
+        },
+    },
+
+    theme: {
+        extend: {
+            colors: {
+                olive: '#584C08',
+                cream: '#FFFAE0', // Note: Di gambar warnanya sedikit lebih gelap (seperti #E5DCC3), tapi saya ikuti instruksi #FFFAE0
+                mustard: '#D3B514',
+            }
         },
     },
 

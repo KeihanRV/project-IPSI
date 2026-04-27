@@ -12,3 +12,6 @@ Route::get('/halo', function () {
     return 'Halo, Selamat datang!';
 });
 
+// Import API routes from api folder
+require __DIR__ . '/api/products.php';
+

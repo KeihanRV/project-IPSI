@@ -1,0 +1,361 @@
+<!doctype html>
+<html lang="id">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Topi Baseball Polos Cotton Twill - SHOO</title>
+        <script src="https://cdn.tailwindcss.com"></script>
+        <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+        />
+        <script>
+            tailwind.config = {
+                theme: {
+                    extend: {
+                        colors: {
+                            cream: "#FAF9F6",
+                            beige: "#F5F2E9",
+                            olive: "#6B7280",
+                            "olive-dark": "#4B5563",
+                            gold: "#D4B47B",
+                        },
+                    },
+                },
+            };
+        </script>
+        <style>
+            body {
+                font-family:
+                    "Inter",
+                    -apple-system,
+                    BlinkMacSystemFont,
+                    sans-serif;
+            }
+            .border-gold {
+                border-color: #d4b47b;
+            }
+            .bg-gold-light {
+                background-color: #f8f6f0;
+            }
+        </style>
+    </head>
+    <body class="bg-cream text-gray-900">
+        <!-- 1. NAVBAR -->
+        <header class="bg-white border-b border-beige/30 py-4">
+            <div
+                class="max-w-6xl mx-auto px-6 flex items-center justify-between"
+            >
+                <!-- Logo -->
+                <div class="text-3xl font-bold text-gray-900">SHOO</div>
+
+                <!-- Dashboard button -->
+                <button
+                    class="px-6 py-2 bg-gold-light border border-gold rounded-xl text-sm font-medium text-gray-800 hover:bg-gold hover:text-white transition-all"
+                >
+                    Dashboard
+                </button>
+
+                <!-- Search -->
+                <div class="flex-1 max-w-lg mx-8">
+                    <div class="relative">
+                        <input
+                            type="text"
+                            placeholder="Search products..."
+                            class="w-full pl-12 pr-6 py-3 border border-beige rounded-2xl focus:outline-none focus:ring-2 focus:ring-gold focus:border-gold bg-beige/30 text-sm"
+                        />
+                        <i
+                            class="fas fa-search absolute left-5 top-1/2 -translate-y-1/2 text-gray-500"
+                        ></i>
+                    </div>
+                </div>
+
+                <!-- Cart -->
+                <div
+                    class="relative p-3 bg-gold-light border border-gold rounded-2xl hover:bg-gold hover:text-white transition-all cursor-pointer"
+                >
+                    <i class="fas fa-shopping-cart text-xl"></i>
+                    <span
+                        class="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-6 h-6 flex items-center justify-center font-bold"
+                        >3</span
+                    >
+                </div>
+            </div>
+        </header>
+
+        <div class="max-w-6xl mx-auto px-6 py-12">
+            <!-- 2. SECTION UTAMA - GRID 2 KOLOM (60/40) -->
+            <div class="grid grid-cols-1 lg:grid-cols-12 lg:gap-12 mb-16">
+                <!-- KIRI: 60% (lg:col-span-7) -->
+                <div class="lg:col-span-7 mb-12 lg:mb-0">
+                    <!-- GAMBAR BESAR -->
+                    <div
+                        class="aspect-[4/3] bg-gradient-to-br from-gray-100 to-gray-200 border-2 border-gold rounded-2xl flex items-center justify-center shadow-lg"
+                    >
+                        <i class="fas fa-image text-7xl text-gray-400"></i>
+                    </div>
+                </div>
+
+                <!-- KANAN: 40% (lg:col-span-5) - SEMUA INFO PRODUK -->
+                <div class="lg:col-span-5 space-y-8">
+                    <!-- 1. Nama Produk -->
+                    <h1 class="text-4xl lg:text-5xl font-bold leading-tight">
+                        Topi Baseball Polos Cotton Twill
+                    </h1>
+
+                    <!-- 2. Garis pemisah -->
+                    <div class="w-24 h-px bg-gold"></div>
+
+                    <!-- 3. Rating -->
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center gap-2">
+                            <div class="flex text-yellow-400 text-xl">
+                                <i class="fas fa-star"></i
+                                ><i class="fas fa-star"></i
+                                ><i class="fas fa-star"></i
+                                ><i class="fas fa-star"></i
+                                ><i class="fas fa-star"></i>
+                            </div>
+                            <span class="text-lg font-semibold"
+                                >(1.2k ulasan)</span
+                            >
+                        </div>
+                        <div
+                            class="flex items-center gap-1 text-sm text-gray-600"
+                        >
+                            <i class="fas fa-fire text-orange-500"></i>
+                            800 terjual
+                        </div>
+                    </div>
+
+                    <!-- 4. Lokasi -->
+                    <div
+                        class="flex items-center gap-3 text-lg font-medium text-gray-700"
+                    >
+                        <i class="fas fa-map-marker-alt text-gold"></i>
+                        Jakarta Selatan
+                    </div>
+
+                    <!-- 5. Harga -->
+                    <div class="text-5xl font-black text-olive-dark mt-4 mb-8">
+                        Rp 79.000
+                    </div>
+
+                    <!-- 6. VARIAN - Grid tombol kecil -->
+                    <div>
+                        <div class="text-lg font-semibold mb-4">Varian:</div>
+                        <div class="grid grid-cols-2 gap-3">
+                            <button
+                                class="group flex items-center gap-3 p-4 bg-cream border border-gold/50 hover:border-gold hover:bg-gold-light rounded-xl transition-all group-hover:scale-[1.02]"
+                            >
+                                <div
+                                    class="w-10 h-10 bg-white border border-gray-200 rounded-lg flex items-center justify-center"
+                                >
+                                    <i
+                                        class="fas fa-circle text-gray-400 text-sm"
+                                    ></i>
+                                </div>
+                                <span
+                                    class="font-medium text-sm group-hover:text-olive-dark"
+                                    >Putih</span
+                                >
+                            </button>
+                            <button
+                                class="group flex items-center gap-3 p-4 bg-cream border border-gold/50 hover:border-gold hover:bg-gold-light rounded-xl transition-all group-hover:scale-[1.02]"
+                            >
+                                <div
+                                    class="w-10 h-10 bg-gray-900 border border-gray-300 rounded-lg flex items-center justify-center"
+                                >
+                                    <i
+                                        class="fas fa-square text-white text-sm"
+                                    ></i>
+                                </div>
+                                <span
+                                    class="font-medium text-sm group-hover:text-olive-dark"
+                                    >Hitam</span
+                                >
+                            </button>
+                            <button
+                                class="group flex items-center gap-3 p-4 bg-cream border border-gold/50 hover:border-gold hover:bg-gold-light rounded-xl transition-all group-hover:scale-[1.02]"
+                            >
+                                <div
+                                    class="w-10 h-10 bg-red-400 border border-red-300 rounded-lg flex items-center justify-center"
+                                >
+                                    <i
+                                        class="fas fa-cube text-white text-sm"
+                                    ></i>
+                                </div>
+                                <span
+                                    class="font-medium text-sm group-hover:text-olive-dark"
+                                    >Merah</span
+                                >
+                            </button>
+                            <button
+                                class="group flex items-center gap-3 p-4 bg-cream border border-gold/50 hover:border-gold hover:bg-gold-light rounded-xl transition-all group-hover:scale-[1.02]"
+                            >
+                                <div
+                                    class="w-10 h-10 bg-blue-500 border border-blue-400 rounded-lg flex items-center justify-center"
+                                >
+                                    <i
+                                        class="fas fa-star text-white text-sm"
+                                    ></i>
+                                </div>
+                                <span
+                                    class="font-medium text-sm group-hover:text-olive-dark"
+                                    >Biru</span
+                                >
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- 7. QUANTITY + STOK -->
+                    <div class="flex items-center justify-between">
+                        <div
+                            class="flex items-center gap-4 p-4 bg-cream border border-gold/30 rounded-xl"
+                        >
+                            <button
+                                class="w-14 h-14 border border-gray-300 rounded-xl flex items-center justify-center hover:bg-gray-100 transition"
+                            >
+                                -
+                            </button>
+                            <span
+                                class="text-2xl font-bold text-gray-900 w-20 text-center font-mono"
+                                >1</span
+                            >
+                            <button
+                                class="w-14 h-14 border border-gray-300 rounded-xl flex items-center justify-center hover:bg-gray-100 transition"
+                            >
+                                +
+                            </button>
+                        </div>
+                        <span class="text-lg font-semibold text-gray-700"
+                            >Stok: 150</span
+                        >
+                    </div>
+
+                    <!-- 8. SUBTOTAL -->
+                    <div
+                        class="flex justify-between items-baseline text-xl mb-8"
+                    >
+                        <span class="font-semibold text-gray-700"
+                            >Subtotal:</span
+                        >
+                        <span class="text-2xl font-bold text-olive-dark"
+                            >Rp 79.000</span
+                        >
+                    </div>
+
+                    <!-- 9. BUTTONS -->
+                    <div class="grid grid-cols-1 gap-4">
+                        <button
+                            class="w-full bg-gradient-to-r from-olive to-olive-dark text-white font-bold py-5 px-8 rounded-2xl text-xl shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all"
+                        >
+                            + Keranjang
+                        </button>
+                        <button
+                            class="w-full border-2 border-olive text-olive font-bold py-5 px-8 rounded-2xl text-xl shadow-lg hover:bg-olive hover:text-white transition-all"
+                        >
+                            Hubungi
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 3. SECTION BAWAH - GRID 2 KOLOM -->
+            <div class="grid grid-cols-1 lg:grid-cols-12 lg:gap-12 mt-24">
+                <!-- KIRI: Detail + Spesifikasi -->
+                <div class="lg:col-span-8 space-y-8">
+                    <!-- Card Detail Produk -->
+                    <div
+                        class="bg-white border border-beige/30 rounded-2xl p-8"
+                    >
+                        <h2 class="text-2xl font-bold mb-6">Detail Produk</h2>
+                        <p class="text-lg text-gray-700 leading-relaxed">
+                            Topi baseball polos dengan material cotton twill
+                            premium memberikan kenyamanan maksimal. Desain
+                            klasik dengan tali pengatur velcro dan UV protection
+                            50+ cocok untuk aktivitas outdoor sehari-hari.
+                        </p>
+                    </div>
+
+                    <!-- Card Spesifikasi -->
+                    <div
+                        class="bg-white border border-beige/30 rounded-2xl p-8"
+                    >
+                        <h2 class="text-2xl font-bold mb-6">Spesifikasi</h2>
+                        <div
+                            class="grid grid-cols-1 md:grid-cols-2 gap-6 text-gray-700"
+                        >
+                            <div>
+                                <strong>Material:</strong> 100% Cotton Twill
+                            </div>
+                            <div>
+                                <strong>Tali Pengatur:</strong> Adjustable
+                                Velcro
+                            </div>
+                            <div>
+                                <strong>Ukuran Logo:</strong> Custom Available
+                            </div>
+                            <div><strong>Garansi:</strong> 6 Bulan</div>
+                            <div><strong>UV Protection:</strong> 50+</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- KANAN: Review Card -->
+                <div class="lg:col-span-4">
+                    <div
+                        class="bg-white border border-beige/30 rounded-2xl p-8 sticky top-8"
+                    >
+                        <div class="flex items-start gap-4 mb-6">
+                            <div
+                                class="w-16 h-16 bg-gradient-to-br from-purple-400 to-pink-400 rounded-2xl flex items-center justify-center shadow-lg flex-shrink-0"
+                            >
+                                <span class="text-white font-bold text-xl"
+                                    >AS</span
+                                >
+                            </div>
+                            <div class="flex-1 min-w-0">
+                                <div class="flex items-center gap-2 mb-1">
+                                    <h3 class="font-bold text-lg">Amanda S.</h3>
+                                    <div class="flex text-yellow-400">
+                                        <i class="fas fa-star text-sm"></i
+                                        ><i class="fas fa-star text-sm"></i
+                                        ><i class="fas fa-star text-sm"></i
+                                        ><i class="fas fa-star text-sm"></i
+                                        ><i class="far fa-star text-sm"></i>
+                                    </div>
+                                </div>
+                                <p class="text-sm text-gray-600">
+                                    Verified Buyer
+                                </p>
+                            </div>
+                        </div>
+                        <p class="text-gray-700 mb-6 leading-relaxed">
+                            "Kualitas sangat bagus, nyaman dipakai seharian.
+                            Logo custom-nya juga keren sesuai request!"
+                        </p>
+
+                        <!-- Thumbnail gambar kecil -->
+                        <div class="grid grid-cols-2 gap-3">
+                            <div
+                                class="aspect-square bg-gray-200 rounded-xl flex items-center justify-center"
+                            >
+                                <i
+                                    class="fas fa-image text-2xl text-gray-400"
+                                ></i>
+                            </div>
+                            <div
+                                class="aspect-square bg-gray-200 rounded-xl flex items-center justify-center"
+                            >
+                                <i
+                                    class="fas fa-image text-2xl text-gray-400"
+                                ></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

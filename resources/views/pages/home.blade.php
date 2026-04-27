@@ -2,6 +2,20 @@
 
 @section('content')
 
+    @if(session('success'))
+        <div class="mb-6 rounded-2xl border border-[#C9A227] bg-[#F5EEDC] px-5 py-4 shadow-sm text-[#3F3B27]">
+            <div class="flex items-start gap-3">
+                <span class="mt-1 inline-flex h-8 w-8 items-center justify-center rounded-full bg-[#C9A227] text-white">
+                    <i class="fas fa-check"></i>
+                </span>
+                <div>
+                    <p class="font-semibold">Berhasil</p>
+                    <p class="text-sm">{{ session('success') }}</p>
+                </div>
+            </div>
+        </div>
+    @endif
+
     <x-carousel />
 
     {{-- INFO PENCARIAN (Berdiri sendiri) --}}
@@ -27,15 +41,9 @@
         {{-- INI ADALAH GRID SATU-SATUNYA (Berdiri sendiri) --}}
         <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
             @foreach($products as $product)
-                <x-product-card 
-                    :title="$product->title" 
-                    :price="$product->price" 
-                    :rating="$product->rating" 
-                    :sold="number_format($product->sold, 0, ',', '.')" 
-                    :location="$product->location" 
-                    :image="$product->image"
-                    :url="route('product.detail', ['id' => $product->id])"
-                />
+                <x-product-card :title="$product->title" :price="$product->lowest_price" :rating="$product->rating"
+                    :sold="number_format($product->sold, 0, ',', '.')" :location="$product->location" :image="$product->image"
+                    :url="route('product.detail', ['id' => $product->id])" :product-id="$product->id" />
             @endforeach
         </div>
     @endif
