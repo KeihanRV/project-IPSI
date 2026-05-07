@@ -35,7 +35,7 @@
     </a>
 
     <div class="absolute top-4 right-4 z-10">
-        <x-action-button type="delete" url="{{ route('admin.products.destroy', $product->id) }}" />
+        <x-action-button type="delete" url="{{ route('admin.products.destroy', $product->id) }}" :productName="$product->title" />
     </div>
 
     <div class="absolute bottom-4 right-4 z-10">

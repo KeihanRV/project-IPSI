@@ -25,6 +25,9 @@ Route::post('/logout', function () {
 Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
     
     Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('dashboard');
+    Route::get('/confirm-modal-test', function () {
+        return view('admin.confirm-modal-test');
+    })->name('confirm-modal.test');
     
     Route::get('/products/create', [ProductController::class, 'create'])->name('products.create');
     Route::post('/products', [ProductController::class, 'store'])->name('products.store');

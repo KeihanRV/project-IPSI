@@ -12,8 +12,8 @@
         <form method="POST" action="/login">
             @csrf
             <div class="form-group">
-                <label for="text">Username</label>
-                <input type="text" class="form-control" id="text" name="text" required>
+                <label for="email">Email</label>
+                <input type="email" class="form-control" id="email" name="email" required>
             </div>
             <div class="form-group">
                 <label for="password">Password</label>
