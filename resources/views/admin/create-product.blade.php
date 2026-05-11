@@ -5,7 +5,7 @@
     
     <h1 class="text-3xl md:text-4xl font-bold text-center text-gray-900 mb-8 mt-4">Data Produk</h1>
 
-    <form method="POST" action="{{ route('admin.products.store') }}" enctype="multipart/form-data">
+    <form id="productForm" method="POST" action="{{ route('admin.products.store') }}" enctype="multipart/form-data">
         @csrf
         
         <div class="flex flex-col md:flex-row rounded-2xl overflow-hidden shadow-sm border border-gray-200">
@@ -77,11 +77,17 @@
             </div>
         </div>
     </form>
+
+    <x-confirm-modal 
+        id="submitConfirmModal" 
+        title="Konfirmasi Simpan Data" 
+        message="Apakah Anda yakin semua data produk dan varian sudah benar? Data akan disimpan ke dalam sistem." 
+    />
 </div>
 
 <script>
     const DRAFT_KEY = 'admin:create-product:draft';
-    const form = document.querySelector('form');
+    const form = document.getElementById('productForm');
     const imageInput = document.getElementById('imageInput');
     const imagePreview = document.getElementById('imagePreview');
     const imagePlaceholder = document.getElementById('imagePlaceholder');
@@ -306,11 +312,51 @@
         }
     });
 
-    form.addEventListener('submit', function(e) {
-        // Ensure all variant indexes are sequential before submission
-        renumberVariants();
-        clearDraft();
-    });
+    const modal = document.getElementById('submitConfirmModal');
+    let isFormConfirmed = false;
+
+    if (modal) {
+        const confirmBtn = modal.querySelector('.modal-confirm-btn');
+        const cancelBtn = modal.querySelector('.modal-cancel-btn');
+        const backdrop = modal.querySelector('.modal-backdrop');
+        const submitButtons = form.querySelectorAll('button[type="submit"], input[type="submit"]');
+
+        submitButtons.forEach((button) => {
+            button.addEventListener('click', function(e) {
+                if (!isFormConfirmed) {
+                    e.preventDefault();
+                    modal.classList.remove('hidden');
+                }
+            });
+        });
+
+        form.addEventListener('submit', function(e) {
+            if (!isFormConfirmed) {
+                e.preventDefault();
+                return;
+            }
+        });
+
+        function closeModal() {
+            modal.classList.add('hidden');
+        }
+
+        cancelBtn.addEventListener('click', closeModal);
+        backdrop.addEventListener('click', closeModal);
+
+        confirmBtn.addEventListener('click', function() {
+            isFormConfirmed = true;
+            closeModal();
+            renumberVariants();
+            clearDraft();
+            form.requestSubmit();
+        });
+    } else {
+        form.addEventListener('submit', function() {
+            renumberVariants();
+            clearDraft();
+        });
+    }
 
     resetFormBtn.addEventListener('click', function() {
         clearDraft();

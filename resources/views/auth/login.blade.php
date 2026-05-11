@@ -4,7 +4,7 @@
     <form method="POST" action="{{ route('login') }}" class="space-y-4">
         @csrf
         <div>
-            <x-input-label for="email" value="Username" />
+            <x-input-label for="email" value="Email" />
             <x-text-input id="email" type="email" name="email" :value="old('email')" required autofocus placeholder="Admin_Primary" />
             <x-input-error :messages="$errors->get('email')" />
         </div>
